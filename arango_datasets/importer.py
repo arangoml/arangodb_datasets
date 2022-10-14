@@ -74,14 +74,14 @@ class Importer:
             raise
 
         try:
-            with progress(f"Downloading File for: {collection_name}") as p:
+            with progress(f"Downloading file for: {collection_name}") as p:
                 p.add_task("load_file")
                 data = requests.get(file_url).json()
         except (HTTPError, ConnectionError) as e:
             print("Unable to download file.")
             print(e)
             raise
-
+        print(f"Downloaded file for: {collection_name}, now importing... ")
         self.insert_docs(collection, data, collection_name)
 
     def load(self, dataset_name: str):
