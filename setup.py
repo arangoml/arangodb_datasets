@@ -1,0 +1,59 @@
+#!/usr/bin/env python
+
+"""The setup script."""
+
+from setuptools import setup, find_packages
+
+with open('HISTORY.rst') as history_file:
+    history = history_file.read()
+
+with open("README.md", "r", encoding="utf-8") as fh:
+    long_description = fh.read()
+
+install_requirements = [ 'python-arango>=7.4.1', 'jsonlines>=3.1.0'
+
+]
+
+
+dev_requirements = [ 'black>=22.8.0', 
+ 'pytest>=7.1.3', 
+ 'sphinx>=5.1.1',
+ 'pre-commit' 
+
+]
+
+setup(
+    name='arango_datasets',
+    version='0.0.0.1',
+    author="Chris Woodward",
+    author_email='christopher@arangodb.com',
+    description="Package for fetching and loading datasets for ArangoDB deployments.",
+    long_description=long_description,
+    long_description_content_type="text/markdown",
+    url='https://github.com/cw00dw0rd/arango_datasets',
+    project_urls={
+        "Bug Tracker": "https://github.com/cw00dw0rd/arango_datasets",
+    },
+    python_requires='>=3.7',
+    classifiers=[
+        'Development Status :: 2 - Pre-Alpha',
+        'Intended Audience :: Developers',
+        'License :: OSI Approved :: Apache Software License',
+        'Natural Language :: English',
+        'Programming Language :: Python :: 3',
+        "Operating System :: OS Independent",
+    ],
+    license="Apache Software License 2.0",
+    keywords='arango_datasets',
+    package_dir={'arango_datasets' : 'arango_datasets'},
+    packages=find_packages(include=['arango_datasets', 'arango_datasets.*']),
+    include_package_data=True,
+    #-----
+
+    install_requires=install_requirements,
+    test_suite='tests',
+    extras_require={
+        'dev' : dev_requirements
+    },
+    zip_safe=False,
+)
