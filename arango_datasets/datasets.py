@@ -62,7 +62,7 @@ class Datasets:
     def insert_docs(
         self,
         collection: StandardCollection,
-        docs: List[dict[Any, Any]],
+        docs: List[Dict[Any, Any]],
         collection_name: str,
     ) -> None:
         try:
