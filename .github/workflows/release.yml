@@ -11,8 +11,8 @@ jobs:
     runs-on: ubuntu-latest
     strategy:
       matrix:
-        python: ["3.7", "3.8", "3.9", "3.10"]
-    name: Python ${{ matrix.python }}
+        python: ["3.8", "3.9", "3.10"]
+    name: Lint - Python ${{ matrix.python }}
     steps:
       - uses: actions/checkout@v2
       - name: Setup Python ${{ matrix.python }}
@@ -35,8 +35,8 @@ jobs:
     runs-on: ubuntu-latest
     strategy:
       matrix:
-        python: ["3.7", "3.8", "3.9", "3.10"]
-    name: Python ${{ matrix.python }}
+        python: ["3.8", "3.9", "3.10"]
+    name: Test - Python ${{ matrix.python }}
     steps:
       - uses: actions/checkout@v2
       - name: Setup Python ${{ matrix.python }}
