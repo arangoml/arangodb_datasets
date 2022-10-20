@@ -1,3 +1,5 @@
+from typing import Any, no_type_check
+
 import pytest
 
 from arango_datasets.datasets import Datasets
@@ -24,7 +26,7 @@ def test_dataset_constructor() -> None:
         assert Datasets(db, metadata_file="bad_url")
 
 
-def test_list_datasets(capfd) -> None:
+def test_list_datasets(capfd: Any) -> None:
     datasets = Datasets(db).list_datasets()
     out, err = capfd.readouterr()
     assert "FLIGHTS" in out
@@ -32,7 +34,8 @@ def test_list_datasets(capfd) -> None:
     assert "FLIGHTS" in datasets
 
 
-def test_dataset_info(capfd) -> None:
+@no_type_check
+def test_dataset_info(capfd: Any) -> None:
     with pytest.raises(Exception):
         Datasets.dataset_info()
 
@@ -46,6 +49,7 @@ def test_dataset_info(capfd) -> None:
     assert len(out) > 0
 
 
+@no_type_check
 def test_load() -> None:
     Datasets(db).load("FLIGHTS")
     with pytest.raises(Exception):

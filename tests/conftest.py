@@ -1,7 +1,10 @@
 from typing import Any
 
 from arango import ArangoClient
+from arango.database import StandardDatabase
 from arango.exceptions import CollectionDeleteError
+
+db: StandardDatabase
 
 
 def pytest_addoption(parser: Any) -> None:
@@ -12,6 +15,7 @@ def pytest_addoption(parser: Any) -> None:
 
 
 def pytest_configure(config: Any) -> None:
+    global db
     con = {
         "url": config.getoption("url"),
         "username": config.getoption("username"),
@@ -26,7 +30,6 @@ def pytest_configure(config: Any) -> None:
     print("Database: " + con["dbName"])
     print("----------------------------------------")
 
-    global db
     db = ArangoClient(hosts=con["url"]).db(
         con["dbName"], con["username"], con["password"], verify=True
     )
@@ -34,6 +37,7 @@ def pytest_configure(config: Any) -> None:
 
 
 def cleanup_collections() -> None:
+    global db
     if db.has_collection("flights"):
         try:
             db.delete_collection("flights")
