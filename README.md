@@ -2,20 +2,20 @@
 Package for loading example datasets into an ArangoDB Instance.
 
 ```
-from arango_datasets.importer import Importer
+from arango_datasets.datasets import Datasets
 from arango import ArangoClient
 
-# Importer requires a valid database object 
+# Datasets requires a valid database object 
 db = ArangoClient(hosts='http://localhost:8529').db("dbName", username="root", password="")
 
-importer = Importer(db)
+datasets = Datasets(db)
 
 # list available datasets
-importer.list_datasets()
+datasets.list_datasets()
 
 # list more information about the dataset files and characteristics 
-#importer.dataset_info("IMDB_X")
+#datasets.dataset_info("IMDB_X")
 
 # Import the dataset
-# importer.load("IMDB_X")
+# datasets.load("IMDB_X")
 ```

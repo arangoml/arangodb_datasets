@@ -1,5 +1,6 @@
 from rich.progress import Progress, SpinnerColumn, TextColumn, TimeElapsedColumn
 
+
 def progress(
     text: str,
     spinner_name: str = "aesthetic",

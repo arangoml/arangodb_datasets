@@ -1,26 +1,36 @@
+import sys
+from typing import Any, Dict, List, Optional
+
 import requests
-from requests import HTTPError, ConnectionError
-from typing import Optional
+from arango.collection import StandardCollection
 from arango.database import Database
 from arango.exceptions import CollectionCreateError, DocumentInsertError
-from arango.collection import StandardCollection
+from requests import ConnectionError, HTTPError
 
 from .utils import progress
 
 
-class Importer:
+class Datasets:
+    """ArangoDB Example Datasets
+
+    :param db: A python-arango database instance
+    :type db: arango.database.Database
+    :param batch_size:
+        Optional batch size supplied to python-arango import_bulk function
+    :type batch_size: int
+    :param metadata_file: Optional URL for datasets metadata file
+    :type metadata_file: str
+    """
+
     def __init__(
         self,
         db: Database,
         batch_size: Optional[int] = None,
-        dataset_repository: str = "https://arangodb-dataset-library.s3.amazonaws.com",
-        metadata_file: str =
-        "https://arangodb-dataset-library.s3.amazonaws.com/root_metadata.json",
+        metadata_file: str = "https://arangodb-dataset-library.s3.amazonaws.com/root_metadata.json",  # noqa: E501
     ):
         self.metadata_file: str = metadata_file
-        self.metadata_contents: dict
+        self.metadata_contents: Dict[str, Any]
         self.batch_size = batch_size
-        self.url = dataset_repository
         self.user_db = db
         if issubclass(type(db), Database) is False:
             msg = "**db** parameter must inherit from arango.database.Database"
@@ -39,18 +49,22 @@ class Importer:
         for label in self.metadata_contents:
             self.labels.append(label)
 
-    # TODO
-    def list_datasets(self):
+    def list_datasets(self) -> List[str]:
         print(self.labels)
+        return self.labels
 
-    def dataset_info(self, dataset_name: str):
+    def dataset_info(self, dataset_name: str) -> Dict[str, Any]:
         for i in self.metadata_contents[str(dataset_name).upper()]:
             print(f"{i}: {self.metadata_contents[str(dataset_name).upper()][i]} ")
             print("")
+        return self.metadata_contents
 
     def insert_docs(
-        self, collection: StandardCollection, docs: list, collection_name: str
-    ):
+        self,
+        collection: StandardCollection,
+        docs: List[Dict[Any, Any]],
+        collection_name: str,
+    ) -> None:
         try:
             with progress(f"Collection: {collection_name}") as p:
                 p.add_task("insert_docs")
@@ -63,15 +77,18 @@ class Importer:
 
         print(f"Finished loading current file for collection: {collection_name}")
 
-    def load_file(self, collection_name: str, edge_type: bool, file_url: str):
+    def load_file(self, collection_name: str, edge_type: bool, file_url: str) -> None:
         collection: StandardCollection
 
         try:
             collection = self.user_db.create_collection(collection_name, edge=edge_type)
         except CollectionCreateError as exec:
-            print(f"Failed to create {collection_name} due to the following error:")
-            print(exec.message)
-            raise
+            print(
+                f"""Failed to create {collection_name} collection due
+                 to the following error:"""
+            )
+            print(exec.error_message)
+            sys.exit(1)
 
         try:
             with progress(f"Downloading file for: {collection_name}") as p:
@@ -84,7 +101,7 @@ class Importer:
         print(f"Downloaded file for: {collection_name}, now importing... ")
         self.insert_docs(collection, data, collection_name)
 
-    def load(self, dataset_name: str):
+    def load(self, dataset_name: str) -> None:
 
         if str(dataset_name).upper() in self.labels:
 
@@ -98,4 +115,4 @@ class Importer:
 
         else:
             print(f"Dataset `{str(dataset_name.upper())}` not found")
-            return
+            sys.exit(1)
