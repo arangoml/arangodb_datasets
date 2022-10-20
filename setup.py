@@ -22,6 +22,10 @@ dev_requirements = [
     "flake8>=3.9.2",
     "pytest>=7.1.3",
     "pytest-cov>=4.0.0",
+    "isort>=5.9.3",
+    "mypy>=0.930",
+    "types-setuptools",
+    "bandit>=1.7.4",
 ]
 
 setup(
