@@ -29,7 +29,7 @@ dev_requirements = [
 
 setup(
     name="arango_datasets",
-    version="0.0.0.1",
+    version="0.0.1",
     author="Chris Woodward",
     author_email="christopher@arangodb.com",
     description="Package for fetching and loading datasets for ArangoDB deployments.",
