@@ -29,7 +29,7 @@ dev_requirements = [
 
 setup(
     name="arango_datasets",
-    version="0.0.1",
+    version="1.0.0",
     author="Chris Woodward",
     author_email="christopher@arangodb.com",
     description="Package for fetching and loading datasets for ArangoDB deployments.",
@@ -39,7 +39,7 @@ setup(
     project_urls={
         "Bug Tracker": "https://github.com/cw00dw0rd/arango_datasets",
     },
-    python_requires=">=3.7",
+    python_requires=">=3.8",
     classifiers=[
         "Development Status :: 2 - Pre-Alpha",
         "Intended Audience :: Developers",
