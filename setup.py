@@ -21,6 +21,7 @@ dev_requirements = [
     "types-requests>=2.28.11.2",
     "flake8>=3.9.2",
     "pytest>=7.1.3",
+    "pytest-cov>=4.0.0",
 ]
 
 setup(

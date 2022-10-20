@@ -52,7 +52,7 @@ jobs:
       - name: Install packages
         run: pip install .[dev]
       - name: Run pytest
-        run: pytest --cov=${{env.PACKAGE_DIR}} --cov-report xml --cov-report term-missing -v --color=yes --no-cov-on-fail --code-highlight=yes
+        run: pytest --cov=${{env.PACKAGE_DIR}} --cov-report xml --cov-report term-missing -v --color=yes --no-cov-on-fail --code-highlight=yes --cov-fail-under=75
 
   release:
     needs: build
