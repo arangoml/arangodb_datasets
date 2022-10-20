@@ -10,7 +10,7 @@ with open("HISTORY.rst") as history_file:
 with open("README.md", "r", encoding="utf-8") as fh:
     long_description = fh.read()
 
-install_requirements = ["python-arango>=7.4.1", "jsonlines>=3.1.0"]
+install_requirements = ["python-arango>=7.4.1", "requests>=2.28.1", "rich>=12.6.0"]
 
 
 dev_requirements = [
