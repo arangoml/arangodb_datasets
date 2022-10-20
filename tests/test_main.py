@@ -17,7 +17,7 @@ def test_dataset_constructor() -> None:
     assert Datasets(
         db,
         batch_size=1000,
-        metadata_file="https://arangodb-dataset-library.s3.amazonaws.com/root_metadata.json",
+        metadata_file="https://arangodb-dataset-library.s3.amazonaws.com/root_metadata.json",  # noqa: E501
     )
     with pytest.raises(Exception):
         assert Datasets({})

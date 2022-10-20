@@ -14,18 +14,17 @@ install_requirements = ["python-arango>=7.4.1", "requests>=2.28.1", "rich>=12.6.
 
 
 dev_requirements = [
-    "black>=22.8.0",
-    "pytest>=7.1.3",
-    "sphinx>=5.1.1",
+    "bandit>=1.7.4",
+    "black>=22.10.0",
+    "flake8>=5.0.4",
+    "isort>=5.10.1",
+    "mypy>=0.982",
     "pre-commit>=2.20.0",
-    "types-requests>=2.28.11.2",
-    "flake8>=3.9.2",
     "pytest>=7.1.3",
     "pytest-cov>=4.0.0",
-    "isort>=5.9.3",
-    "mypy>=0.930",
-    "types-setuptools",
-    "bandit>=1.7.4",
+    "sphinx>=5.3.0",
+    "types-requests>=2.28.11.2",
+    "types-setuptools>=65.5.0.1",
 ]
 
 setup(

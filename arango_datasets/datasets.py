@@ -26,7 +26,7 @@ class Datasets:
         self,
         db: Database,
         batch_size: Optional[int] = None,
-        metadata_file: str = "https://arangodb-dataset-library.s3.amazonaws.com/root_metadata.json",
+        metadata_file: str = "https://arangodb-dataset-library.s3.amazonaws.com/root_metadata.json",  # noqa: E501
     ):
         self.metadata_file: str = metadata_file
         self.metadata_contents: Dict[str, Any]
