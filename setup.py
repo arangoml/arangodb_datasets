@@ -17,8 +17,10 @@ dev_requirements = [
     "black>=22.8.0",
     "pytest>=7.1.3",
     "sphinx>=5.1.1",
-    "pre-commit",
-    "types-requests",
+    "pre-commit>=2.20.0",
+    "types-requests>=2.28.11.2",
+    "flake8>=3.9.2",
+    "pytest>=7.1.3",
 ]
 
 setup(
