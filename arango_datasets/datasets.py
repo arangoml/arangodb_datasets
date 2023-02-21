@@ -2,6 +2,7 @@ import sys
 from typing import Any, Dict, List, Optional
 
 import requests
+import json
 from arango.collection import StandardCollection
 from arango.database import Database
 from arango.exceptions import CollectionCreateError, DocumentInsertError
@@ -30,8 +31,9 @@ class Datasets:
     ):
         self.metadata_file: str = metadata_file
         self.metadata_contents: Dict[str, Any]
-        self.batch_size = batch_size
+        self.batch_size = batch_size or 50
         self.user_db = db
+        self.file_type: str
         if issubclass(type(db), Database) is False:
             msg = "**db** parameter must inherit from arango.database.Database"
             raise TypeError(msg)
@@ -74,6 +76,7 @@ class Datasets:
         except DocumentInsertError as exec:
             print("Document insertion failed due to the following error:")
             print(exec.message)
+            sys.exit(1)
 
         print(f"Finished loading current file for collection: {collection_name}")
 
@@ -89,21 +92,44 @@ class Datasets:
             )
             print(exec.error_message)
             sys.exit(1)
+        if self.file_type == "json":
+            try:
+                with progress(f"Downloading file for: {collection_name}") as p:
+                    p.add_task("load_file")
+                    data = requests.get(file_url).json()
+            except (HTTPError, ConnectionError) as e:
+                print("Unable to download file.")
+                print(e)
+                raise
+            print(f"Downloaded file for: {collection_name}, now importing... ")
+            self.insert_docs(collection, data, collection_name)
+    
+        elif self.file_type == "jsonl":
+            json_data = []
+            try:
+                with progress(f"Downloading file for: {collection_name}") as p:
+                    p.add_task("load_file")
+                    data = requests.get(file_url)
 
-        try:
-            with progress(f"Downloading file for: {collection_name}") as p:
-                p.add_task("load_file")
-                data = requests.get(file_url).json()
-        except (HTTPError, ConnectionError) as e:
-            print("Unable to download file.")
-            print(e)
-            raise
-        print(f"Downloaded file for: {collection_name}, now importing... ")
-        self.insert_docs(collection, data, collection_name)
+                if data.encoding is None:
+                    data.encoding = 'utf-8'
+
+                for line in data.iter_lines(decode_unicode=True):
+                    if line:
+                        json_data.append(json.loads(line))
+
+            except (HTTPError, ConnectionError) as e:
+                print("Unable to download file.")
+                print(e)
+                raise
+            print(f"Downloaded file for: {collection_name}, now importing... ")
+            self.insert_docs(collection, json_data, collection_name)
+                            
 
     def load(self, dataset_name: str) -> None:
 
         if str(dataset_name).upper() in self.labels:
+            self.file_type = self.metadata_contents[str(dataset_name).upper()]["file_type"]
 
             for edge in self.metadata_contents[str(dataset_name).upper()]["edges"]:
                 for e in edge["files"]:
@@ -112,6 +138,7 @@ class Datasets:
             for vertex in self.metadata_contents[str(dataset_name).upper()]["vertices"]:
                 for v in vertex["files"]:
                     self.load_file(vertex["collection_name"], False, v)
+            
 
         else:
             print(f"Dataset `{str(dataset_name.upper())}` not found")
