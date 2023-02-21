@@ -124,6 +124,8 @@ class Datasets:
                 raise
             print(f"Downloaded file for: {collection_name}, now importing... ")
             self.insert_docs(collection, json_data, collection_name)
+        else:
+            raise ValueError(f"Unsupported file type: {self.file_type}")
 
     def load(self, dataset_name: str) -> None:
         if str(dataset_name).upper() in self.labels:
