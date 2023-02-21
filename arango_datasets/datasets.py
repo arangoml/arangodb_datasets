@@ -1,6 +1,6 @@
 import json
 import sys
-from typing import Any, Dict, List, Optional
+from typing import Any, Dict, List
 
 import requests
 from arango.collection import StandardCollection
