@@ -41,11 +41,11 @@ def cleanup_collections() -> None:
     if db.has_collection("flights"):
         try:
             db.delete_collection("flights")
-        except (CollectionDeleteError):
+        except CollectionDeleteError:
             print("unable to delete flights")
 
     if db.has_collection("airports"):
         try:
             db.delete_collection("airports")
-        except (CollectionDeleteError):
+        except CollectionDeleteError:
             print("unable to delete airports")
