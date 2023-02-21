@@ -126,7 +126,6 @@ class Datasets:
             self.insert_docs(collection, json_data, collection_name)
 
     def load(self, dataset_name: str) -> None:
-
         if str(dataset_name).upper() in self.labels:
             self.file_type = self.metadata_contents[str(dataset_name).upper()][
                 "file_type"
