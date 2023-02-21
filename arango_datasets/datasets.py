@@ -1,8 +1,8 @@
+import json
 import sys
 from typing import Any, Dict, List, Optional
 
 import requests
-import json
 from arango.collection import StandardCollection
 from arango.database import Database
 from arango.exceptions import CollectionCreateError, DocumentInsertError
@@ -103,7 +103,7 @@ class Datasets:
                 raise
             print(f"Downloaded file for: {collection_name}, now importing... ")
             self.insert_docs(collection, data, collection_name)
-    
+
         elif self.file_type == "jsonl":
             json_data = []
             try:
@@ -112,7 +112,7 @@ class Datasets:
                     data = requests.get(file_url)
 
                 if data.encoding is None:
-                    data.encoding = 'utf-8'
+                    data.encoding = "utf-8"
 
                 for line in data.iter_lines(decode_unicode=True):
                     if line:
@@ -124,12 +124,13 @@ class Datasets:
                 raise
             print(f"Downloaded file for: {collection_name}, now importing... ")
             self.insert_docs(collection, json_data, collection_name)
-                            
 
     def load(self, dataset_name: str) -> None:
 
         if str(dataset_name).upper() in self.labels:
-            self.file_type = self.metadata_contents[str(dataset_name).upper()]["file_type"]
+            self.file_type = self.metadata_contents[str(dataset_name).upper()][
+                "file_type"
+            ]
 
             for edge in self.metadata_contents[str(dataset_name).upper()]["edges"]:
                 for e in edge["files"]:
@@ -138,7 +139,6 @@ class Datasets:
             for vertex in self.metadata_contents[str(dataset_name).upper()]["vertices"]:
                 for v in vertex["files"]:
                     self.load_file(vertex["collection_name"], False, v)
-            
 
         else:
             print(f"Dataset `{str(dataset_name.upper())}` not found")
