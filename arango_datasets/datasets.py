@@ -26,12 +26,12 @@ class Datasets:
     def __init__(
         self,
         db: Database,
-        batch_size: Optional[int] = None,
+        batch_size: int = 50,
         metadata_file: str = "https://arangodb-dataset-library.s3.amazonaws.com/root_metadata.json",  # noqa: E501
     ):
         self.metadata_file: str = metadata_file
         self.metadata_contents: Dict[str, Any]
-        self.batch_size = batch_size or 50
+        self.batch_size = batch_size
         self.user_db = db
         self.file_type: str
         if issubclass(type(db), Database) is False:
