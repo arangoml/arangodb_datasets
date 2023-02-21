@@ -20,7 +20,7 @@ def test_dataset_constructor() -> None:
         metadata_file="https://arangodb-dataset-library.s3.amazonaws.com/root_metadata.json",  # noqa: E501
     )
     with pytest.raises(Exception):
-        assert Datasets({})
+        assert Datasets({}) # type: ignore
 
     with pytest.raises(Exception):
         assert Datasets(db, metadata_file="bad_url")

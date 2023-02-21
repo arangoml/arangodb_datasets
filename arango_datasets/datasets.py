@@ -84,7 +84,7 @@ class Datasets:
         collection: StandardCollection
 
         try:
-            collection = self.user_db.create_collection(collection_name, edge=edge_type)
+            collection = self.user_db.create_collection(collection_name, edge=edge_type) # type: ignore
         except CollectionCreateError as exec:
             print(
                 f"""Failed to create {collection_name} collection due
