@@ -1,5 +1,6 @@
+import json
 import sys
-from typing import Any, Dict, List, Optional
+from typing import Any, Dict, List
 
 import requests
 from arango.collection import StandardCollection
@@ -25,13 +26,14 @@ class Datasets:
     def __init__(
         self,
         db: Database,
-        batch_size: Optional[int] = None,
+        batch_size: int = 50,
         metadata_file: str = "https://arangodb-dataset-library.s3.amazonaws.com/root_metadata.json",  # noqa: E501
     ):
         self.metadata_file: str = metadata_file
         self.metadata_contents: Dict[str, Any]
         self.batch_size = batch_size
         self.user_db = db
+        self.file_type: str
         if issubclass(type(db), Database) is False:
             msg = "**db** parameter must inherit from arango.database.Database"
             raise TypeError(msg)
@@ -74,22 +76,17 @@ class Datasets:
         except DocumentInsertError as exec:
             print("Document insertion failed due to the following error:")
             print(exec.message)
+            sys.exit(1)
 
         print(f"Finished loading current file for collection: {collection_name}")
 
-    def load_file(self, collection_name: str, edge_type: bool, file_url: str) -> None:
-        collection: StandardCollection
-
-        try:
-            collection = self.user_db.create_collection(collection_name, edge=edge_type)
-        except CollectionCreateError as exec:
-            print(
-                f"""Failed to create {collection_name} collection due
-                 to the following error:"""
-            )
-            print(exec.error_message)
-            sys.exit(1)
-
+    def load_json(
+        self,
+        collection_name: str,
+        edge_type: bool,
+        file_url: str,
+        collection: StandardCollection,
+    ) -> None:
         try:
             with progress(f"Downloading file for: {collection_name}") as p:
                 p.add_task("load_file")
@@ -97,13 +94,62 @@ class Datasets:
         except (HTTPError, ConnectionError) as e:
             print("Unable to download file.")
             print(e)
-            raise
+            raise e
         print(f"Downloaded file for: {collection_name}, now importing... ")
         self.insert_docs(collection, data, collection_name)
 
-    def load(self, dataset_name: str) -> None:
+    def load_jsonl(
+        self,
+        collection_name: str,
+        edge_type: bool,
+        file_url: str,
+        collection: StandardCollection,
+    ) -> None:
+        json_data = []
+        try:
+            with progress(f"Downloading file for: {collection_name}") as p:
+                p.add_task("load_file")
+                data = requests.get(file_url)
 
+            if data.encoding is None:
+                data.encoding = "utf-8"
+
+            for line in data.iter_lines(decode_unicode=True):
+                if line:
+                    json_data.append(json.loads(line))
+
+        except (HTTPError, ConnectionError) as e:
+            print("Unable to download file.")
+            print(e)
+            raise
+        print(f"Downloaded file for: {collection_name}, now importing... ")
+        self.insert_docs(collection, json_data, collection_name)
+
+    def load_file(self, collection_name: str, edge_type: bool, file_url: str) -> None:
+        collection: StandardCollection
+        try:
+            collection = self.user_db.create_collection(
+                collection_name, edge=edge_type
+            )  # type: ignore
+        except CollectionCreateError as exec:
+            print(
+                f"""Failed to create {collection_name} collection due
+                 to the following error:"""
+            )
+            print(exec.error_message)
+            sys.exit(1)
+        if self.file_type == "json":
+            self.load_json(collection_name, edge_type, file_url, collection)
+        elif self.file_type == "jsonl":
+            self.load_jsonl(collection_name, edge_type, file_url, collection)
+        else:
+            raise ValueError(f"Unsupported file type: {self.file_type}")
+
+    def load(self, dataset_name: str) -> None:
         if str(dataset_name).upper() in self.labels:
+            self.file_type = self.metadata_contents[str(dataset_name).upper()][
+                "file_type"
+            ]
 
             for edge in self.metadata_contents[str(dataset_name).upper()]["edges"]:
                 for e in edge["files"]:
