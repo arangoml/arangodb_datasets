@@ -7,7 +7,19 @@ from arango_datasets.datasets import Datasets
 
 from .conftest import cleanup_collections, db
 
+global test_metadata_url
+global root_metadata_url
+global bad_metadata_url
+test_metadata_url = (
+    "https://arangodb-dataset-library.s3.amazonaws.com/test_metadata.json"  # noqa: E501
+)
+root_metadata_url = (
+    "https://arangodb-dataset-library.s3.amazonaws.com/root_metadata.json"  # noqa: E501
+)
+bad_metadata_url = "http://bad_url.arangodb.com/"
 
+
+@no_type_check
 def test_dataset_constructor() -> None:
     assert Datasets(db)
     assert Datasets(db, batch_size=1000)
@@ -18,26 +30,26 @@ def test_dataset_constructor() -> None:
     assert Datasets(
         db,
         batch_size=1000,
-        metadata_file="https://arangodb-dataset-library.s3.amazonaws.com/root_metadata.json",  # noqa: E501
+        metadata_file=root_metadata_url,
     )
     with pytest.raises(TypeError):
         assert Datasets(
             db="some none db object",
             batch_size=1000,
-            metadata_file="https://arangodb-dataset-library.s3.amazonaws.com/root_metadata.json",  # noqa: E501
+            metadata_file=root_metadata_url,
         )
     with pytest.raises(Exception):
-        assert Datasets({})  # type: ignore
+        assert Datasets({})
 
     with pytest.raises(ConnectionError):
-        assert Datasets(db, metadata_file="http://bad_url.arangodb.com/")
-    
+        assert Datasets(db, metadata_file=bad_metadata_url)
 
 
+@no_type_check
 def test_list_datasets(capfd: Any) -> None:
     datasets = Datasets(
         db,
-        metadata_file="https://arangodb-dataset-library.s3.amazonaws.com/test_metadata.json",  # noqa: E501
+        metadata_file=test_metadata_url,
     ).list_datasets()
     out, err = capfd.readouterr()
     assert "TEST" in out
@@ -55,7 +67,7 @@ def test_dataset_info(capfd: Any) -> None:
 
     dataset = Datasets(
         db,
-        metadata_file="https://arangodb-dataset-library.s3.amazonaws.com/test_metadata.json",  # noqa: E501
+        metadata_file=test_metadata_url,
     ).dataset_info("TEST")
     assert type(dataset) is dict
 
@@ -101,7 +113,7 @@ def json_bad_url() -> None:
             Datasets(db),
             collection_name=collection_name,
             edge_type=edge_type,
-            file_url="http://bad_url.arangodb.com/",
+            file_url=bad_metadata_url,
             collection=collection,
         )
 
@@ -135,7 +147,7 @@ def jsonl_bad_url() -> None:
             Datasets(db),
             collection_name=collection_name,
             edge_type=edge_type,
-            file_url="http://bad_url.arangodb.com/",
+            file_url=bad_metadata_url,
             collection=collection,
         )
 
@@ -145,7 +157,7 @@ def test_load() -> None:
     cleanup_collections()
     Datasets(
         db,
-        metadata_file="https://arangodb-dataset-library.s3.amazonaws.com/test_metadata.json",
+        metadata_file=test_metadata_url,
     ).load("TEST")
     with pytest.raises(Exception):
         Datasets(db).load(2)
