@@ -80,9 +80,53 @@ class Datasets:
 
         print(f"Finished loading current file for collection: {collection_name}")
 
+    def load_json(
+        self,
+        collection_name: str,
+        edge_type: bool,
+        file_url: str,
+        collection: StandardCollection,
+    ) -> None:
+        try:
+            with progress(f"Downloading file for: {collection_name}") as p:
+                p.add_task("load_file")
+                data = requests.get(file_url).json()
+        except (HTTPError, ConnectionError) as e:
+            print("Unable to download file.")
+            print(e)
+            raise e
+        print(f"Downloaded file for: {collection_name}, now importing... ")
+        self.insert_docs(collection, data, collection_name)
+
+    def load_jsonl(
+        self,
+        collection_name: str,
+        edge_type: bool,
+        file_url: str,
+        collection: StandardCollection,
+    ) -> None:
+        json_data = []
+        try:
+            with progress(f"Downloading file for: {collection_name}") as p:
+                p.add_task("load_file")
+                data = requests.get(file_url)
+
+            if data.encoding is None:
+                data.encoding = "utf-8"
+
+            for line in data.iter_lines(decode_unicode=True):
+                if line:
+                    json_data.append(json.loads(line))
+
+        except (HTTPError, ConnectionError) as e:
+            print("Unable to download file.")
+            print(e)
+            raise
+        print(f"Downloaded file for: {collection_name}, now importing... ")
+        self.insert_docs(collection, json_data, collection_name)
+
     def load_file(self, collection_name: str, edge_type: bool, file_url: str) -> None:
         collection: StandardCollection
-
         try:
             collection = self.user_db.create_collection(
                 collection_name, edge=edge_type
@@ -95,37 +139,9 @@ class Datasets:
             print(exec.error_message)
             sys.exit(1)
         if self.file_type == "json":
-            try:
-                with progress(f"Downloading file for: {collection_name}") as p:
-                    p.add_task("load_file")
-                    data = requests.get(file_url).json()
-            except (HTTPError, ConnectionError) as e:
-                print("Unable to download file.")
-                print(e)
-                raise
-            print(f"Downloaded file for: {collection_name}, now importing... ")
-            self.insert_docs(collection, data, collection_name)
-
+            self.load_json(collection_name, edge_type, file_url, collection)
         elif self.file_type == "jsonl":
-            json_data = []
-            try:
-                with progress(f"Downloading file for: {collection_name}") as p:
-                    p.add_task("load_file")
-                    data = requests.get(file_url)
-
-                if data.encoding is None:
-                    data.encoding = "utf-8"
-
-                for line in data.iter_lines(decode_unicode=True):
-                    if line:
-                        json_data.append(json.loads(line))
-
-            except (HTTPError, ConnectionError) as e:
-                print("Unable to download file.")
-                print(e)
-                raise
-            print(f"Downloaded file for: {collection_name}, now importing... ")
-            self.insert_docs(collection, json_data, collection_name)
+            self.load_jsonl(collection_name, edge_type, file_url, collection)
         else:
             raise ValueError(f"Unsupported file type: {self.file_type}")
 

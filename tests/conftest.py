@@ -38,14 +38,14 @@ def pytest_configure(config: Any) -> None:
 
 def cleanup_collections() -> None:
     global db
-    if db.has_collection("flights"):
+    if db.has_collection("test_vertex"):
         try:
-            db.delete_collection("flights")
+            db.delete_collection("test_vertex")
         except CollectionDeleteError:
-            print("unable to delete flights")
+            print("unable to delete test_vertex")
 
-    if db.has_collection("airports"):
+    if db.has_collection("test_edge"):
         try:
-            db.delete_collection("airports")
+            db.delete_collection("test_edge")
         except CollectionDeleteError:
-            print("unable to delete airports")
+            print("unable to delete test_edge")
