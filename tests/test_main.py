@@ -20,17 +20,24 @@ def test_dataset_constructor() -> None:
         batch_size=1000,
         metadata_file="https://arangodb-dataset-library.s3.amazonaws.com/root_metadata.json",  # noqa: E501
     )
+    with pytest.raises(TypeError):
+        assert Datasets(
+            db="some none db object",
+            batch_size=1000,
+            metadata_file="https://arangodb-dataset-library.s3.amazonaws.com/root_metadata.json",  # noqa: E501
+        )
     with pytest.raises(Exception):
         assert Datasets({})  # type: ignore
 
-    with pytest.raises(Exception):
-        assert Datasets(db, metadata_file="bad_url")
+    with pytest.raises(ConnectionError):
+        assert Datasets(db, metadata_file="http://bad_url.arangodb.com/")
+    
 
 
 def test_list_datasets(capfd: Any) -> None:
     datasets = Datasets(
         db,
-        metadata_file="https://arangodb-dataset-library.s3.amazonaws.com/test_metadata.json",
+        metadata_file="https://arangodb-dataset-library.s3.amazonaws.com/test_metadata.json",  # noqa: E501
     ).list_datasets()
     out, err = capfd.readouterr()
     assert "TEST" in out
@@ -48,7 +55,7 @@ def test_dataset_info(capfd: Any) -> None:
 
     dataset = Datasets(
         db,
-        metadata_file="https://arangodb-dataset-library.s3.amazonaws.com/test_metadata.json",
+        metadata_file="https://arangodb-dataset-library.s3.amazonaws.com/test_metadata.json",  # noqa: E501
     ).dataset_info("TEST")
     assert type(dataset) is dict
 
@@ -69,11 +76,9 @@ def test_load_json() -> None:
     cleanup_collections()
     collection_name = "test_vertex"
     edge_type = False
-    file_url = """
-    https://arangodb-dataset-library.s3.amazonaws.com/test_files/json/vertex_collection/test_vertex.json
-    """
+    file_url = "https://arangodb-dataset-library.s3.amazonaws.com/test_files/json/vertex_collection/test_vertex.json"  # noqa: E501
     collection = db.create_collection("test_vertex")
-    assert (
+    assert None == (
         Datasets.load_json(
             Datasets(db),
             collection_name=collection_name,
@@ -81,8 +86,16 @@ def test_load_json() -> None:
             file_url=file_url,
             collection=collection,
         )
-        == None
     )
+
+
+@no_type_check
+def json_bad_url() -> None:
+    cleanup_collections()
+    collection_name = "test_vertex"
+    edge_type = False
+    collection = db.create_collection("test_vertex")
+
     with pytest.raises(ConnectionError):
         Datasets.load_json(
             Datasets(db),
@@ -90,7 +103,7 @@ def test_load_json() -> None:
             edge_type=edge_type,
             file_url="http://bad_url.arangodb.com/",
             collection=collection,
-        ) == None
+        )
 
 
 @no_type_check
@@ -98,11 +111,9 @@ def test_load_jsonl() -> None:
     cleanup_collections()
     collection_name = "test_vertex"
     edge_type = False
-    file_url = """
-    https://arangodb-dataset-library.s3.amazonaws.com/test_files/jsonl/vertex_collection/test_vertex.jsonl
-    """
+    file_url = "https://arangodb-dataset-library.s3.amazonaws.com/test_files/jsonl/vertex_collection/test_vertex.jsonl"  # noqa: E501
     collection = db.create_collection("test_vertex")
-    assert (
+    assert None == (
         Datasets.load_jsonl(
             Datasets(db),
             collection_name=collection_name,
@@ -110,8 +121,15 @@ def test_load_jsonl() -> None:
             file_url=file_url,
             collection=collection,
         )
-        == None
     )
+
+
+@no_type_check
+def jsonl_bad_url() -> None:
+    cleanup_collections()
+    collection_name = "test_vertex"
+    edge_type = False
+    collection = db.create_collection("test_vertex")
     with pytest.raises(ConnectionError):
         Datasets.load_jsonl(
             Datasets(db),
@@ -119,7 +137,7 @@ def test_load_jsonl() -> None:
             edge_type=edge_type,
             file_url="http://bad_url.arangodb.com/",
             collection=collection,
-        ) == None
+        )
 
 
 @no_type_check
