@@ -18,8 +18,7 @@ def test_dataset_constructor() -> None:
     assert Datasets(
         db,
         batch_size=1000,
-        metadata_file=
-        "https://arangodb-dataset-library.s3.amazonaws.com/root_metadata.json",  # noqa: E501
+        metadata_file="https://arangodb-dataset-library.s3.amazonaws.com/root_metadata.json",  # noqa: E501
     )
     with pytest.raises(Exception):
         assert Datasets({})  # type: ignore
@@ -31,8 +30,7 @@ def test_dataset_constructor() -> None:
 def test_list_datasets(capfd: Any) -> None:
     datasets = Datasets(
         db,
-        metadata_file=
-        "https://arangodb-dataset-library.s3.amazonaws.com/test_metadata.json",
+        metadata_file="https://arangodb-dataset-library.s3.amazonaws.com/test_metadata.json",
     ).list_datasets()
     out, err = capfd.readouterr()
     assert "TEST" in out
@@ -50,8 +48,7 @@ def test_dataset_info(capfd: Any) -> None:
 
     dataset = Datasets(
         db,
-        metadata_file=
-        "https://arangodb-dataset-library.s3.amazonaws.com/test_metadata.json",
+        metadata_file="https://arangodb-dataset-library.s3.amazonaws.com/test_metadata.json",
     ).dataset_info("TEST")
     assert type(dataset) is dict
 
@@ -72,7 +69,7 @@ def test_load_json() -> None:
     cleanup_collections()
     collection_name = "test_vertex"
     edge_type = False
-    file_url= """
+    file_url = """
     https://arangodb-dataset-library.s3.amazonaws.com/test_files/json/vertex_collection/test_vertex.json
     """
     collection = db.create_collection("test_vertex")
@@ -101,7 +98,7 @@ def test_load_jsonl() -> None:
     cleanup_collections()
     collection_name = "test_vertex"
     edge_type = False
-    file_url =  """
+    file_url = """
     https://arangodb-dataset-library.s3.amazonaws.com/test_files/jsonl/vertex_collection/test_vertex.jsonl
     """
     collection = db.create_collection("test_vertex")
@@ -130,8 +127,7 @@ def test_load() -> None:
     cleanup_collections()
     Datasets(
         db,
-        metadata_file=
-        "https://arangodb-dataset-library.s3.amazonaws.com/test_metadata.json",
+        metadata_file="https://arangodb-dataset-library.s3.amazonaws.com/test_metadata.json",
     ).load("TEST")
     with pytest.raises(Exception):
         Datasets(db).load(2)
