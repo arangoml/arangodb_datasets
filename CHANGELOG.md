@@ -1,3 +1,37 @@
+1.1.0 (2023-02-22)
+------------------
+- Update setup.py. [Chris Woodward]
+
+  Increment Version
+- Merge pull request #3 from arangoml/jsonl_support. [Chris Woodward]
+
+  adds jsonl support
+- Test cleanup. [Chris Woodward]
+- Max line fix and test corrections. [Chris Woodward]
+- Reverts line changes. [Chris Woodward]
+- Adds additional testing. [Chris Woodward]
+- Formatting. [Chris Woodward]
+- Black. [Chris Woodward]
+- Mypy errors. [Chris Woodward]
+- Resolve flake8. [Chris Woodward]
+- Merge branch 'jsonl_support' of github.com:arangoml/arangodb_datasets
+  into jsonl_support. [Chris Woodward]
+- Update arango_datasets/datasets.py. [Alex Geenen, Chris Woodward]
+- Updates batch default. [Chris Woodward]
+- Resolves linting error. [Chris Woodward]
+- Resolves linting error. [Chris Woodward]
+- Resolves linting error. [Chris Woodward]
+- Adds jsonl support. [Chris Woodward]
+- Merge pull request #2 from arangoml/actions/changelog. [Chris
+  Woodward]
+
+  changelog: release 1.0.0
+- !gitchangelog. [cw00dw0rd]
+- Update release.yml. [Chris Woodward]
+
+  updates needed job names
+
+
 1.0.0 (2022-10-20)
 ------------------
 - Update setup.py. [Chris Woodward]
