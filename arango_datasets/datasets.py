@@ -43,7 +43,7 @@ class Datasets:
             raise TypeError(msg)
 
         try:
-            response = requests.get(self.metadata_file)
+            response = requests.get(self.metadata_file, timeout=6000)
             response.raise_for_status()
             self.metadata_contents = response.json()
         except (HTTPError, ConnectionError) as e:
@@ -94,7 +94,7 @@ class Datasets:
         try:
             with progress(f"Downloading file for: {collection_name}") as p:
                 p.add_task("load_file")
-                data = requests.get(file_url).json()
+                data = requests.get(file_url, timeout=6000).json()
         except (HTTPError, ConnectionError) as e:
             print("Unable to download file.")
             print(e)
