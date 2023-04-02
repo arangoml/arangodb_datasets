@@ -149,7 +149,7 @@ class Datasets:
         else:
             raise ValueError(f"Unsupported file type: {self.file_type}")
 
-    def cleanup_collections(self, collection_name) -> None:
+    def cleanup_collections(self, collection_name: str) -> None:
         if (
             self.user_db.has_collection(collection_name)
             and self.preserve_existing is False
