@@ -113,7 +113,7 @@ class Datasets:
         try:
             with progress(f"Downloading file for: {collection_name}") as p:
                 p.add_task("load_file")
-                data = requests.get(file_url)
+                data = requests.get(file_url, timeout=6000)
 
             if data.encoding is None:
                 data.encoding = "utf-8"
