@@ -21,6 +21,8 @@ class Datasets:
     :type batch_size: int
     :param metadata_file: Optional URL for datasets metadata file
     :type metadata_file: str
+    :param preserve_existing: Boolean to preserve existing data and graph definiton
+    type preserve_existing: bool
     """
 
     def __init__(
@@ -28,11 +30,13 @@ class Datasets:
         db: Database,
         batch_size: int = 50,
         metadata_file: str = "https://arangodb-dataset-library.s3.amazonaws.com/root_metadata.json",  # noqa: E501
+        preserve_existing: bool = False,
     ):
         self.metadata_file: str = metadata_file
         self.metadata_contents: Dict[str, Any]
         self.batch_size = batch_size
         self.user_db = db
+        self.preserve_existing = preserve_existing
         self.file_type: str
         if issubclass(type(db), Database) is False:
             msg = "**db** parameter must inherit from arango.database.Database"
@@ -71,7 +75,7 @@ class Datasets:
             with progress(f"Collection: {collection_name}") as p:
                 p.add_task("insert_docs")
 
-                collection.import_bulk(docs)
+                collection.import_bulk(docs, batch_size=self.batch_size)
 
         except DocumentInsertError as exec:
             print("Document insertion failed due to the following error:")
@@ -145,6 +149,19 @@ class Datasets:
         else:
             raise ValueError(f"Unsupported file type: {self.file_type}")
 
+    def cleanup_collections(self, collection_name) -> None:
+        if (
+            self.user_db.has_collection(collection_name)
+            and self.preserve_existing is False
+        ):
+            print(
+                f"""
+                Old collection found
+                ${collection_name},
+                dropping and creating with new data."""
+            )
+            self.user_db.delete_collection(collection_name)
+
     def load(self, dataset_name: str) -> None:
         if str(dataset_name).upper() in self.labels:
             self.file_type = self.metadata_contents[str(dataset_name).upper()][
@@ -152,10 +169,12 @@ class Datasets:
             ]
 
             for edge in self.metadata_contents[str(dataset_name).upper()]["edges"]:
+                self.cleanup_collections(collection_name=edge["collection_name"])
                 for e in edge["files"]:
                     self.load_file(edge["collection_name"], True, e)
 
             for vertex in self.metadata_contents[str(dataset_name).upper()]["vertices"]:
+                self.cleanup_collections(collection_name=vertex["collection_name"])
                 for v in vertex["files"]:
                     self.load_file(vertex["collection_name"], False, v)
 
