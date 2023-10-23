@@ -29,7 +29,7 @@ class Datasets:
         self,
         db: Database,
         batch_size: int = 50,
-        metadata_file: str = "https://arangodb-dataset-library.s3.amazonaws.com/root_metadata.json",  # noqa: E501
+        metadata_file: str = "https://arangodb-dataset-library-ml.s3.amazonaws.com/root_metadata.json",  # noqa: E501
         preserve_existing: bool = False,
     ):
         self.metadata_file: str = metadata_file
