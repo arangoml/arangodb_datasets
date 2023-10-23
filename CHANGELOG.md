@@ -1,3 +1,23 @@
+1.1.1 (2023-04-04)
+------------------
+- Update setup.py. [Chris Woodward]
+
+  increment release version
+- Merge pull request #7 from arangoml/cleanup_batches. [Chris Woodward]
+
+  adds cleanup functionality and adds batch support to file loading
+- Adds timeout requests. [Chris Woodward]
+- Adds timeout requests. [Chris Woodward]
+- Adds missing type annotation. [Chris Woodward]
+- Adds cleanup functionality and adds batch support to file loading.
+  [Chris Woodward]
+- Merge pull request #5 from arangoml/actions/changelog. [Chris
+  Woodward]
+
+  changelog: release 1.1.0
+- !gitchangelog. [cw00dw0rd]
+
+
 1.1.0 (2023-02-22)
 ------------------
 - Update setup.py. [Chris Woodward]
