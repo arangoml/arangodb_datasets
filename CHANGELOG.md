@@ -1,3 +1,22 @@
+1.1.2 (2023-10-23)
+------------------
+- Merge pull request #8 from arangoml/actions/changelog. [Anthony
+  Mahanna]
+
+  changelog: release 1.1.1
+- !gitchangelog. [cw00dw0rd]
+- Merge pull request #10 from arangoml/bump-package-version. [Chris
+  Woodward]
+
+  bump package version
+- Bump package version. [Anthony Mahanna]
+- Merge pull request #9 from arangoml/update-default-metadata-file.
+  [Chris Woodward]
+
+  update default metadata file
+- Update default metadata file. [Anthony Mahanna]
+
+
 1.1.1 (2023-04-04)
 ------------------
 - Update setup.py. [Chris Woodward]
