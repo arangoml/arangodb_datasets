@@ -1,16 +1,77 @@
-# pyproject.toml
-[tool.pytest.ini_options]
-minversion = "6.0"
-addopts = "-ra -q"
-testpaths = [
-    "tests"
+[build-system]
+requires = ["setuptools>=45", "wheel", "setuptools_scm"]
+build-backend = "setuptools.build_meta"
+
+[tool.setuptools_scm]
+normalize = true
+
+[project]
+name = "arango_datasets"
+description = "Package for fetching and loading datasets for ArangoDB deployments."
+readme = "README.md"
+dynamic = ["version"]
+requires-python = ">=3.8"
+
+
+authors = [{name = "Christopher Woodward", email = "christopher@arangodb.com"}]
+
+classifiers = [
+    "Development Status :: 2 - Pre-Alpha",
+    "Intended Audience :: Developers",
+    "License :: OSI Approved :: Apache Software License",
+    "Natural Language :: English",
+    "Programming Language :: Python :: 3",
+    "Operating System :: OS Independent",
 ]
 
-[tool.black]
-line-length=88
+dependencies = ["python-arango>=7.4.1", "requests>=2.28.1", "rich>=12.6.0"]
+
+[project.optional-dependencies]
+dev = [
+    "bandit>=1.7.4",
+    "black>=22.10.0",
+    "flake8>=5.0.4",
+    "Flake8-pyproject",
+    "isort>=5.10.1",
+    "mypy>=0.982",
+    "pre-commit>=2.20.0",
+    "pytest>=7.1.3",
+    "pytest-cov>=4.0.0",
+    "sphinx>=5.3.0",
+    "types-requests>=2.28.11.2",
+    "types-setuptools>=65.5.0.1",
+]
+
+[project.urls]
+"Homepage" = "https://github.com/arangoml/arangodb_datasets"
+
+[tool.setuptools]
+packages = ["arango_datasets"]
+
+[tool.pytest.ini_options]
+addopts = "-s -vv"
+minversion = "6.0"
+testpaths = ["tests"]
 
 [tool.coverage.report]
 omit = ["*tests*"]
 
 [tool.coverage.run]
 omit = ["*tests*"]
+
+[tool.isort]
+profile = "black"
+
+[tool.flake8]
+max-line-length = 88
+extend-ignore = ["E203", "W503", "E251"]
+exclude = [".git", ".idea", ".*_cache", "dist", "venv"]
+
+[tool.mypy]
+strict = true
+ignore_missing_imports = true
+implicit_reexport = true
+scripts_are_modules = true
+follow_imports = "skip"
+disallow_subclassing_any = false
+disallow_untyped_decorators = false

@@ -1,4 +1,0 @@
- python-arango>=2.0.1, 
- sphinx>=5.1.1, 
-
-
