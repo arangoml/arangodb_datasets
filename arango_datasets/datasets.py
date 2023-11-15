@@ -132,9 +132,7 @@ class Datasets:
     def load_file(self, collection_name: str, edge_type: bool, file_url: str) -> None:
         collection: StandardCollection
         try:
-            collection = self.user_db.create_collection(
-                collection_name, edge=edge_type
-            )  # type: ignore
+            collection = self.user_db.create_collection(collection_name, edge=edge_type)
         except CollectionCreateError as exec:
             print(
                 f"""Failed to create {collection_name} collection due
