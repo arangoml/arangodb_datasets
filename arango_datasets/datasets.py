@@ -122,9 +122,8 @@ class Datasets:
                     self.__import_bulk(col, load_function(file))
 
         if edge_definitions := dataset_contents.get("edge_definitions"):
-            graph_name = dataset_contents["graph_name"]
-            self.user_db.delete_graph(graph_name, ignore_missing=True)
-            self.user_db.create_graph(graph_name, edge_definitions)
+            self.user_db.delete_graph(dataset_name, ignore_missing=True)
+            self.user_db.create_graph(dataset_name, edge_definitions)
 
     def __get_response(self, url: str, timeout: int = 60) -> requests.Response:
         """Wrapper around requests.get() with a progress bar.
