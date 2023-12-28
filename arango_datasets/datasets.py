@@ -103,23 +103,23 @@ class Datasets:
         )
 
         file_type = dataset_contents["file_type"]
-        load_function: Callable[[str], Any]
+        load_file_function: Callable[[str], List[Dict[str, Any]]]
         if file_type == "json":
-            load_function = self.__load_json
+            load_file_function = self.__load_json
         elif file_type == "jsonl":
-            load_function = self.__load_jsonl
+            load_file_function = self.__load_jsonl
         else:
             raise ValueError(f"Unsupported file type: {file_type}")
 
         for data, is_edge in [
-            (dataset_contents["edges"], True),
             (dataset_contents["vertices"], False),
+            (dataset_contents["edges"], True),
         ]:
             for col_data in data:
                 col = self.__initialize_collection(col_data["collection_name"], is_edge)
 
                 for file in col_data["files"]:
-                    self.__import_bulk(col, load_function(file))
+                    self.__import_bulk(col, load_file_function(file))
 
         if edge_definitions := dataset_contents.get("edge_definitions"):
             self.user_db.delete_graph(dataset_name, ignore_missing=True)
