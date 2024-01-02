@@ -1,3 +1,36 @@
+1.2.0 (2024-01-02)
+------------------
+- Housekeeping (#13) [Anthony Mahanna]
+
+  * cleanup `release.yml`
+
+  * add python 3.11 & 3.12 to ci matrix
+
+  * cleanup README
+
+  * cleanup tests
+
+  * cleanup: `arango_datasets`
+
+  * rename test file
+
+  * cleanup: `create_graph`
+
+  * cleanup `datasets.py`
+- Migrate to `pyproject.toml` (#12) [Anthony Mahanna]
+
+  * migrate to `pyproject.toml`
+
+  * cleanup
+
+  * fix mypy
+- Merge pull request #11 from arangoml/actions/changelog. [Anthony
+  Mahanna]
+
+  changelog: release 1.1.2
+- !gitchangelog. [aMahanna]
+
+
 1.1.2 (2023-10-23)
 ------------------
 - Merge pull request #8 from arangoml/actions/changelog. [Anthony
