@@ -159,7 +159,7 @@ class Datasets:
         """
         print(f"Initializing collection '{collection_name}'")
 
-        if self.preserve_existing is False:
+        if not self.preserve_existing:
             self.user_db.delete_collection(collection_name, ignore_missing=True)
 
         return self.user_db.create_collection(collection_name, edge=is_edge)
