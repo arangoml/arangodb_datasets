@@ -27,7 +27,7 @@ class Datasets:
     def __init__(
         self,
         db: Database,
-        batch_size: int = 50,
+        batch_size: int = 1000,
         metadata_file: str = "https://arangodb-dataset-library-ml.s3.amazonaws.com/root_metadata.json",  # noqa: E501
         preserve_existing: bool = False,
     ):
