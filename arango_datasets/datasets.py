@@ -157,7 +157,7 @@ class Datasets:
         :return: The collection.
         :rtype: arango.collection.StandardCollection
         """
-        if self.preserve_existing is False:
+        if not self.preserve_existing:
             m = f"Collection '{collection_name}' already exists, dropping and creating with new data."  # noqa: E501
             print(m)
 
