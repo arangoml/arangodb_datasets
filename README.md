@@ -11,10 +11,10 @@ db = ArangoClient(hosts='http://localhost:8529').db("dbName", username="root", p
 datasets = Datasets(db)
 
 # List available datasets
-datasets.list_datasets()
+print(datasets.list_datasets())
 
 # List more information about a particular dataset
-datasets.dataset_info("IMDB_X")
+print(datasets.dataset_info("IMDB_X"))
 
 # Import the dataset
 datasets.load("IMDB_X")
