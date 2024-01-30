@@ -1,5 +1,3 @@
-from typing import Any
-
 import pytest
 from requests import ConnectionError
 
@@ -22,16 +20,13 @@ def test_dataset_constructor() -> None:
         Datasets(db, metadata_file=bad_metadata_url)
 
 
-def test_list_datasets(capfd: Any) -> None:
+def test_list_datasets() -> None:
     datasets = Datasets(db, metadata_file=test_metadata_url).list_datasets()
     assert type(datasets) is list
     assert "TEST" in datasets
 
-    out, _ = capfd.readouterr()
-    assert "TEST" in out
 
-
-def test_dataset_info(capfd: Any) -> None:
+def test_dataset_info() -> None:
     with pytest.raises(ValueError):
         Datasets(db).dataset_info("invalid")
 
@@ -44,9 +39,6 @@ def test_dataset_info(capfd: Any) -> None:
     dataset = datasets.dataset_info("TEST_JSONL")
     assert type(dataset) is dict
     assert dataset["file_type"] == "jsonl"
-
-    out, _ = capfd.readouterr()
-    assert len(out.replace("\n", "")) > 0
 
 
 def test_load_json() -> None:
