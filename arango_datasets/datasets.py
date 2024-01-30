@@ -50,7 +50,6 @@ class Datasets:
         :return: Names of the available datasets to load.
         :rtype: List[str]
         """
-        print(self.__dataset_names)
         return self.__dataset_names
 
     def dataset_info(self, dataset_name: str) -> Dict[str, Any]:
@@ -66,7 +65,6 @@ class Datasets:
             raise ValueError(f"Dataset '{dataset_name}' not found")
 
         info: Dict[str, Any] = self.__metadata[dataset_name.upper()]
-        print(info)
         return info
 
     def load(
