@@ -2,6 +2,8 @@
 Package for loading example datasets into an ArangoDB Instance.
 
 ```py
+# pip install arango-datasets
+
 from arango import ArangoClient
 from arango_datasets import Datasets
 
