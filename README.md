@@ -61,7 +61,7 @@ datasets.load("CVE")
 
 #### Flights
 
-The Flights dataset in the ArangoDB Example Datasets contains flight-related data, including information on routes, airports, and airlines. It is structured as a graph dataset, where airports act as nodes and flights between them as edges. This dataset is useful for demonstrating graph queries, shortest path analysis, and network connectivity within ArangoDB. It enables users to explore real-world aviation data and experiment with ArangoDB’s graph database features.
+The Flights dataset in contains flight-related data, including information on routes, airports, and airlines. It is structured as a graph dataset, where airports act as nodes and flights between them as edges. This dataset is useful for demonstrating graph queries, shortest path analysis, and network connectivity.
 
 Source: https://github.com/arangodb/example-datasets/tree/master/Data%20Loader
 
