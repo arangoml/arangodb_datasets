@@ -1,23 +1,81 @@
-# arango_datasets
-Package for loading example datasets into an ArangoDB Instance.
+# ArangoDB Datasets
 
-```py
-# pip install arango-datasets
+Package for loading pre-configured Graph datasets into an ArangoDB Instance.
 
+**Installation**
+```
+pip install arango-datasets
+```
+
+**Usage**
+```python
 from arango import ArangoClient
 from arango_datasets import Datasets
 
-# Datasets requires a valid database object 
-db = ArangoClient(hosts='http://localhost:8529').db("dbName", username="root", password="")
+# Connect to database
+db = ArangoClient(hosts=...).db(username=..., password=..., verify=True)
 
+# Connect to datasets
 datasets = Datasets(db)
 
-# List available datasets
+# List datasets
 print(datasets.list_datasets())
 
 # List more information about a particular dataset
-print(datasets.dataset_info("IMDB_X"))
+print(datasets.dataset_info("FLIGHTS")
 
-# Import the dataset
-datasets.load("IMDB_X")
+# Load a dataset
+datasets.load("FLIGHTS")
 ```
+
+
+### Notable Datasets
+
+#### Synthea P100
+
+Synthea is an open-source synthetic patient dataset that simulates health records for a diverse set of fictional individuals. It includes demographic, clinical, and social data such as diagnoses, medications, procedures, and encounters over a patient’s lifetime. The data is generated using realistic patterns derived from real-world healthcare statistics, enabling its use in research, development, and testing of health IT systems while preserving patient privacy.
+
+Source: https://synthea.mitre.org/
+
+```python
+print(datasets.dataset_info("SYNTHEA_P100")
+
+# datasets.load("SYNTHEA_P100")
+```
+
+#### Common Vulnerability Exposures
+
+This dataset contains information on Common Vulnerabilities and Exposures (CVE), providing details on known security vulnerabilities in software and hardware. It includes fields such as CVE ID, descriptions, severity scores (CVSS), affected products, and references. The dataset is useful for cybersecurity research, threat analysis, and vulnerability management, helping organizations track and mitigate security risks.
+
+Source: https://www.kaggle.com/datasets/andrewkronser/cve-common-vulnerabilities-and-exposures
+
+```python
+print(datasets.dataset_info("CVE")
+
+# datasets.load("CVE")
+```
+
+#### Flights
+
+The Flights dataset in the ArangoDB Example Datasets contains flight-related data, including information on routes, airports, and airlines. It is structured as a graph dataset, where airports act as nodes and flights between them as edges. This dataset is useful for demonstrating graph queries, shortest path analysis, and network connectivity within ArangoDB. It enables users to explore real-world aviation data and experiment with ArangoDB’s graph database features.
+
+Source: https://github.com/arangodb/example-datasets/tree/master/Data%20Loader
+
+```python
+print(datasets.dataset_info("FLIGHTS")
+
+# datasets.load("FLIGHTS")
+```
+
+#### GDELT Open Intelligence
+
+The GDELT Project (Global Database of Events, Language, and Tone) is an open dataset that monitors global news media in real-time. It captures and analyzes events, themes, emotions, and relationships across countries, organizations, and people. Covering millions of articles from various sources, GDELT provides insights into geopolitical trends, conflicts, and societal changes. The dataset is widely used in research, journalism, and AI applications for tracking global events and sentiment analysis.
+
+Source: https://www.gdeltproject.org/
+
+```python
+print(datasets.dataset_info("OPEN_INTELLIGENCE")
+
+# datasets.load("OPEN_INTELLIGENCE")
+```
+
