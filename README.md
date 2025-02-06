@@ -40,7 +40,7 @@ Source: https://synthea.mitre.org/
 ```python
 print(datasets.dataset_info("SYNTHEA_P100")
 
-# datasets.load("SYNTHEA_P100")
+datasets.load("SYNTHEA_P100")
 ```
 
 #### Common Vulnerability Exposures
@@ -52,7 +52,7 @@ Source: https://www.kaggle.com/datasets/andrewkronser/cve-common-vulnerabilities
 ```python
 print(datasets.dataset_info("CVE")
 
-# datasets.load("CVE")
+datasets.load("CVE")
 ```
 
 #### Flights
@@ -64,7 +64,7 @@ Source: https://github.com/arangodb/example-datasets/tree/master/Data%20Loader
 ```python
 print(datasets.dataset_info("FLIGHTS")
 
-# datasets.load("FLIGHTS")
+datasets.load("FLIGHTS")
 ```
 
 #### GDELT Open Intelligence
@@ -76,6 +76,6 @@ Source: https://www.gdeltproject.org/
 ```python
 print(datasets.dataset_info("OPEN_INTELLIGENCE")
 
-# datasets.load("OPEN_INTELLIGENCE")
+datasets.load("OPEN_INTELLIGENCE")
 ```
 
