@@ -22,7 +22,7 @@ datasets = Datasets(db)
 print(datasets.list_datasets())
 
 # List more information about a particular dataset
-print(datasets.dataset_info("FLIGHTS")
+print(datasets.dataset_info("FLIGHTS"))
 
 # Load a dataset
 datasets.load("FLIGHTS")
@@ -40,7 +40,7 @@ Source: https://synthea.mitre.org/
 Size: 145514 nodes, 311701 edges
 
 ```python
-print(datasets.dataset_info("SYNTHEA_P100")
+print(datasets.dataset_info("SYNTHEA_P100"))
 
 datasets.load("SYNTHEA_P100")
 ```
@@ -54,7 +54,7 @@ Source: https://www.kaggle.com/datasets/andrewkronser/cve-common-vulnerabilities
 Size: 145506 nodes, 316967 edges
 
 ```python
-print(datasets.dataset_info("CVE")
+print(datasets.dataset_info("CVE"))
 
 datasets.load("CVE")
 ```
@@ -68,7 +68,7 @@ Source: https://github.com/arangodb/example-datasets/tree/master/Data%20Loader
 Size: 3375 nodes, 286463 edges
 
 ```python
-print(datasets.dataset_info("FLIGHTS")
+print(datasets.dataset_info("FLIGHTS"))
 
 datasets.load("FLIGHTS")
 ```
@@ -82,7 +82,7 @@ Source: https://www.gdeltproject.org/
 Size: 80047 nodes, 321819 edges
 
 ```python
-print(datasets.dataset_info("OPEN_INTELLIGENCE")
+print(datasets.dataset_info("OPEN_INTELLIGENCE"))
 
 datasets.load("OPEN_INTELLIGENCE")
 ```
