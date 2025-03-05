@@ -90,6 +90,8 @@ class Datasets:
         if dataset_name.upper() not in self.__dataset_names:
             raise ValueError(f"Dataset '{dataset_name}' not found")
 
+        self.user_db.delete_graph(dataset_name, ignore_missing=True)
+
         dataset_contents = self.__metadata[dataset_name.upper()]
 
         # Backwards compatibility
@@ -120,7 +122,6 @@ class Datasets:
                     self.__import_bulk(col, load_file_function(file))
 
         if edge_definitions := dataset_contents.get("edge_definitions"):
-            self.user_db.delete_graph(dataset_name, ignore_missing=True)
             self.user_db.create_graph(dataset_name, edge_definitions)
 
     def __get_response(self, url: str, timeout: int = 60) -> requests.Response:
